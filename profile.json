@@ -1,0 +1,12 @@
+{
+  "id": "libphonenumber",
+  "name": "libphonenumber",
+  "source": "GitHub",
+  "upstream": "google/libphonenumber",
+  "fork": "sudsk/libphonenumber",
+  "fork_url": "https://github.com/sudsk/libphonenumber",
+  "app_name": "libphonenumber",
+  "dispatcher_url": null,
+  "test_command_template": null,
+  "sandbox_setup_command": null
+}
