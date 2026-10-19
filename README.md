@@ -7,12 +7,14 @@ libphonenumber.
 
 ## Layout
 
-- `profile.json` — identity (upstream/fork/app_name) and wiring (dispatcher URL, test-command
-  template, sandbox setup command) that triagent's dashboard and pipeline read for `repo_id =
-  "libphonenumber"`. `dispatcher_url` is `null` until this repo's dispatcher image (below) is
-  actually deployed to Cloud Run — fill it in once that URL exists, so triagent routes
-  cloudrun-mode runs to it automatically instead of needing the global `TRIAGENT_DISPATCHER_URL`
-  env var swapped by hand.
+- `profile.json` — identity (upstream/fork/app_name) and wiring (test-command template, sandbox
+  setup command) that triagent's dashboard and pipeline read for `repo_id = "libphonenumber"`.
+  `dispatcher_url` stays `null` here permanently and on purpose — this is a public repo, and a
+  deployed Cloud Run dispatcher's URL shouldn't sit in a public repo's git history even though the
+  service itself is IAM-locked. Once this repo's dispatcher image (below) is deployed, its real
+  URL goes into the `TRIAGENT_DISPATCHER_URL_LIBPHONENUMBER` env var on whichever host runs the
+  dashboard or pipeline (gitignored `.env`, see `triagent`'s `.env.example`) —
+  `agents/profiles.py`'s `resolve_dispatcher_url` checks that before this file's own (null) field.
 - `dispatcher/` — the Cloud Run Sandbox dispatcher image, toolchain-baked for libphonenumber
   (Java 21 + Maven). Needs `TRIAGENT_SANDBOX_ALLOW_EGRESS=true` at run time — `mvn test` resolves
   dependencies against Maven Central.
